@@ -38,4 +38,18 @@ public class Prims_algo {
 		}
 		return visited;
 	}
+	
+	
+	/*void Graph(int[][] matrix){
+		int size = matrix.length;
+	}*/
+	
+	void printVisited(int[] visited )
+	   {
+	      System.out.print("Visited = ");
+	      for (int i = 0; i < visited.length; i++ )
+	         if ( visited[i]  != 0)
+	           System.out.print( i + " ");
+	      System.out.println();
+	   }
 }
