@@ -1,102 +1,93 @@
+import java.util.*;
 
-public class Prim {
-	
-	private static int infinite = 99999;
-	int size;
-	int[][] matrix;
-	void makeGraph(int[][] input){
-		
-		size = input.length;
-		matrix = new int[size][size];
-		int i,j;
-		for(i=0; i < size; i++)
-			for(j=0; j<size; j++){
-				matrix[i][j] = input[i][j];
-				if(input[i][j] == 0)
-					input[i][j] = infinite;
-			}
-	}
-	
-	public void Prim()
-	   {
-	      int i, j, k, x, y;
+public class Prim
+{
+   static int size;
+   static int infinite = 99999;
+   int cost;
+   
+   public void Prim(final int[][] matrix)
+   {
+      int i, j, k, x, y;
+      size = matrix.length;
+      boolean[] Reached = new boolean[size];	
+      int[] predNode = new int[size];		
 
-	      boolean[] Reached = new boolean[size];	// Reach/unreach nodes
-	      int[] predNode = new int[size];		// Remember min cost edge
+      Reached[0] = true;
+      for ( i=0; i < size; i++)
+      {
+         for ( j=0; j < size; j++)
+         {
+            matrix[i][j] = matrix[i][j];
 
-	      // Start at a vertex, I picked the start node = 0
+            if ( matrix[i][j] == 0 )
+               matrix[i][j] = infinite;
+         }
+      }
+      
+      for ( k = 1; k < size; k++ )
+      {
+         Reached[k] = false;
+      }
 
-	      Reached[0] = true;
+      predNode[0] = 0;      
 
-	      // Other vertices are not reached 
+      printReachSet( Reached );
 
-	      for ( k = 1; k < size; k++ )
-	      {
-	         Reached[k] = false;
-	      }
+ 	 x = y = 1;
+      for ( i = 1; i < size; i++ )
+         {
+        	 for ( j = 1; j < size; j++ )
+             {
+                 if ( matrix[i][j] < matrix[x][y] && !Reached[j] && Reached[i])
+                      {
+                 		x = i;
+                 		y = j;
+                 		System.out.print(matrix[x][y] + " ");
+                 }
+             }
 
-	      predNode[0] = 0;      // No edge for node 0
+          System.out.println("Min cost edge: (" + 
+ 				+ x + "," + 
+ 				+ y + ")" +
+ 				"cost = " + matrix[x][y]);
+          cost += matrix[x][y];
+          predNode[y] = x;        
+          Reached[y] = true;
 
-	      printReachSet( Reached );
+          printReachSet( Reached );     // Print state....
+         
+          System.out.println();
+         }
+            
+	  System.out.println("This is the adjacency matrix");
+      for (int m = 1; m < size; m++)
+      {
+          for (int l = 1; l < size; l++)
+          {
+              System.out.print(matrix[m][l] + "\t");
+          }
+          System.out.println();
+      }
+      printMinCostEdges( predNode );
+      System.out.println("Total Cost: " + cost);
+   }
 
-	      /* =====================================================
-	         UnReachSet will decreas by 1 node in each iteration
-		 There are NNodes-1 unreached nodes; so we can loop
-		 NNodes-1 times and UnReachSet will become empty !
-		 =====================================================  */
-	      for (k = 1; k <size; k++)
-	      {
-	         /* ================================================================
-		    Find min. cost link between: reached node ---> unreached node
-	            ================================================================ */
-	         x = y = 0;
+   void printMinCostEdges( int[] a )
+   {
+      for ( int i = 1; i < size; i++ )
+          System.out.println( a[i] + " --> " + i );
+   }
 
-	         for ( i = 0; i < size; i++ )
-	            for ( j = 0; j < size; j++ )
-	            {
-	                if ( Reached[i] && !Reached[j] &&
-	                     matrix[i][j] < matrix[x][y] )
-	                {
-			   x = i;
-			   y = j;
-	                }
-	            }
+   void printReachSet(boolean[] Reached )
+   {
+      System.out.print("ReachSet = ");
+      for (int i =1; i < Reached.length; i++ )
+         if ( Reached[i] )
+           System.out.print( i + " ");
+      System.out.println();
+   }
 
-	         System.out.println("Min cost edge: (" + 
-					+ x + "," + 
-					+ y + ")" +
-					"cost = " + matrix[x][y]);
-
-	         /* =================================
-		    Add e (x,y) to Spanning tree
-	            ================================= */
-	         predNode[y] = x;          // Record the min cost link
-
-		 /* ==========================================
-		    ReachSet = ReachSet union {y}
-		    UnReachSet = UnReachSet - {y}
-		    ========================================== */
-	         Reached[y] = true;
-
-	         printReachSet( Reached );     // Print state....
-	         System.out.println();
-	      }
-
-	      printMinCostEdges( predNode );
-	   }
-
-	   void printMinCostEdges( int[] a )
-	   {
-	      for ( int i = 0; i < size; i++ )
-	          System.out.println( a[i] + " --> " + i );
-	   }
-
-	   void printReachSet(boolean[] Reached )
-	   {
-	      System.out.print("ReachSet = ");
-	      for (int i = 0; i < Reached.length; i++ )
-	         if ( Reached[i] )
-	           System.out.print( i + " ");
-	      System.out.println();
-	   }
 }
+
+
