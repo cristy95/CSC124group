@@ -14,6 +14,7 @@ public class Prim
       int[] predNode = new int[size];		
 
       Reached[0] = true;
+      Reached[1] = true;
       for ( i=0; i < size; i++)
       {
          for ( j=0; j < size; j++)
@@ -25,21 +26,22 @@ public class Prim
          }
       }
       
-      for ( k = 1; k < size; k++ )
+      for ( k = 2; k < size; k++ )
       {
          Reached[k] = false;
       }
 
       predNode[0] = 0;      
-
+      predNode[1] = 0;
       printReachSet( Reached );
 
- 	 x = y = 1;
+ 	 
       for ( i = 1; i < size; i++ )
          {
-        	 for ( j = 1; j < size; j++ )
+    	  x = y = 1;
+        	 for ( j = 2; j < size; j++ )
              {
-                 if ( matrix[i][j] < matrix[x][y] && !Reached[j] && Reached[i])
+                 if ( matrix[i][j] < matrix[x][y] && !Reached[j] && Reached[i] && x != y)
                       {
                  		x = i;
                  		y = j;
